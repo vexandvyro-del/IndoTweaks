@@ -32,7 +32,7 @@ public partial class FortniteSettingsViewModel : ObservableObject
         public required string RecommendedValue { get; init; }
         public required string Reason { get; init; }
         [ObservableProperty] private bool _isSelected = true;
-        internal required FortniteSettingDefinition Definition { get; init; }
+        public required FortniteSettingDefinition Definition { get; init; }
     }
 
     [RelayCommand]
