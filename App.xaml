@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
+               <ResourceDictionary Source="pack://application:,,,/IndoTweaks;component/Themes/DarkTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <helpers:InverseBoolConverter x:Key="InverseBoolConverter"/>
             <helpers:TweakStateToBrushConverter x:Key="TweakStateToBrushConverter"/>
