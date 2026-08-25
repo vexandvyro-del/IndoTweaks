@@ -1,0 +1,31 @@
+<UserControl x:Class="IndoTweaks.Controls.RadialGauge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="120" Height="120">
+    <Viewbox Stretch="Uniform">
+        <Grid Width="100" Height="100">
+            <!-- Background track (full 270° sweep, dim) -->
+            <Path x:Name="TrackArcPath" Stroke="#FF2A2F38" StrokeThickness="7" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+
+            <!-- Value arc (partial sweep, color-coded by threshold) -->
+            <Path x:Name="ValueArcPath" Stroke="{StaticResource AccentBrush}" StrokeThickness="7"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                <Path.Effect>
+                    <DropShadowEffect Color="#FF00E5A0" BlurRadius="12" ShadowDepth="0" Opacity="0.55"/>
+                </Path.Effect>
+            </Path>
+
+            <!-- Centered value readout -->
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock x:Name="ValueText" Text="0" FontSize="22" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" FontFamily="Consolas"/>
+                    <TextBlock x:Name="UnitText" Text="" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
+                               Margin="2,4,0,0" VerticalAlignment="Bottom"/>
+                </StackPanel>
+                <TextBlock x:Name="LabelText" Text="" FontSize="9" Foreground="{StaticResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center" Margin="0,2,0,0"/>
+            </StackPanel>
+        </Grid>
+    </Viewbox>
+</UserControl>

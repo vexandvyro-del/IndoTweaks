@@ -1,0 +1,105 @@
+<UserControl x:Class="IndoTweaks.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:IndoTweaks.Controls">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="Telemetry" FontSize="26" FontWeight="Bold" Margin="0,0,0,4"/>
+            <TextBlock Text="Live sensor readout, refreshed every second." FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,18"/>
+
+            <UniformGrid Columns="3" Rows="1">
+                <!-- CPU Card -->
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,8,0">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="CPU" Style="{StaticResource SectionHeader}" Margin="0"/>
+                            <Ellipse Style="{StaticResource StatusDot}" HorizontalAlignment="Right" Fill="{StaticResource StatusGoodBrush}"/>
+                        </Grid>
+                        <TextBlock Text="{Binding CpuName}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <controls:RadialGauge Value="{Binding CpuTemp}" Maximum="100" Label="TEMP" Unit="°C"
+                                                   WarnThreshold="0.75" CriticalThreshold="0.90" Width="110" Height="110"/>
+                            <controls:RadialGauge Value="{Binding CpuLoad}" Maximum="100" Label="LOAD" Unit="%"
+                                                   WarnThreshold="0.80" CriticalThreshold="0.95" Width="110" Height="110" Margin="6,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"
+                                   Text="{Binding CpuClock, StringFormat=Clock: {0:0} MHz}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- GPU Card -->
+                <Border Style="{StaticResource CardBorder}" Margin="4,0">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="GPU" Style="{StaticResource SectionHeader}" Margin="0"/>
+                            <Ellipse Style="{StaticResource StatusDot}" HorizontalAlignment="Right" Fill="{StaticResource StatusGoodBrush}"/>
+                        </Grid>
+                        <TextBlock Text="{Binding GpuName}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <controls:RadialGauge Value="{Binding GpuTemp}" Maximum="100" Label="TEMP" Unit="°C"
+                                                   WarnThreshold="0.75" CriticalThreshold="0.88" Width="110" Height="110"/>
+                            <controls:RadialGauge Value="{Binding GpuLoad}" Maximum="100" Label="LOAD" Unit="%"
+                                                   WarnThreshold="0.85" CriticalThreshold="0.97" Width="110" Height="110" Margin="6,0,0,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                            <TextBlock Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"
+                                       Text="{Binding GpuClock, StringFormat={}{0:0} MHz}" Margin="0,0,10,0"/>
+                            <TextBlock Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"
+                                       Text="{Binding GpuFanRpm, StringFormat={}{0:0} RPM}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- RAM Card -->
+                <Border Style="{StaticResource CardBorder}" Margin="8,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="MEMORY" Style="{StaticResource SectionHeader}"/>
+                        <StackPanel HorizontalAlignment="Center" Margin="0,4,0,0">
+                            <controls:RadialGauge Value="{Binding RamUsedPercent}" Maximum="100" Label="RAM USED" Unit="%"
+                                                   WarnThreshold="0.75" CriticalThreshold="0.90" Width="120" Height="120"/>
+                        </StackPanel>
+                        <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0,8,0,0">
+                            <Run Text="{Binding RamAvailableMB, StringFormat={}{0:0} MB free}"/>
+                            <Run Text=" / "/>
+                            <Run Text="{Binding RamTotalMB, StringFormat={}{0:0} MB total}"/>
+                        </TextBlock>
+                        <Button Content="Flush Standby Memory" Style="{StaticResource PrimaryButton}" Margin="0,14,0,0"
+                                Command="{Binding FlushStandbyMemoryCommand}" IsEnabled="{Binding IsFlushingMemory, Converter={StaticResource InverseBoolConverter}}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Network Card -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,16,0,0">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="NETWORK" Style="{StaticResource SectionHeader}" Margin="0"/>
+                        <TextBlock Text="Probing 1.1.1.1 / 8.8.8.8 every 3s" FontSize="10" HorizontalAlignment="Right"
+                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </Grid>
+                    <UniformGrid Columns="3" Margin="0,8,0,0">
+                        <Border BorderBrush="{StaticResource BorderBrush2}" BorderThickness="0,0,1,0" Padding="0,0,10,0">
+                            <StackPanel>
+                                <TextBlock Text="PING" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11"/>
+                                <TextBlock Text="{Binding PingMs, StringFormat={}{0:0} ms}" FontSize="26" FontWeight="Bold" FontFamily="Consolas"/>
+                            </StackPanel>
+                        </Border>
+                        <Border BorderBrush="{StaticResource BorderBrush2}" BorderThickness="0,0,1,0" Padding="14,0">
+                            <StackPanel>
+                                <TextBlock Text="JITTER" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11"/>
+                                <TextBlock Text="{Binding JitterMs, StringFormat={}{0:0.0} ms}" FontSize="26" FontWeight="Bold" FontFamily="Consolas"/>
+                            </StackPanel>
+                        </Border>
+                        <StackPanel Margin="14,0,0,0">
+                            <TextBlock Text="PACKET LOSS" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11"/>
+                            <TextBlock Text="{Binding PacketLossPercent, StringFormat={}{0:0}%}" FontSize="26" FontWeight="Bold" FontFamily="Consolas"/>
+                        </StackPanel>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

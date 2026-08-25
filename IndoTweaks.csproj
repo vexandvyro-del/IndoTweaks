@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>IndoTweaks</AssemblyName>
+    <RootNamespace>IndoTweaks</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64</Platforms>
+    <!-- Add ApplicationIcon>Resources\indotweaks.ico</ApplicationIcon> once you drop an .ico into Resources/ -->
+    <Version>1.0.0</Version>
+
+    <!-- Publish settings: produces a single .exe with the .NET runtime baked in,
+         so end users need nothing installed - no SDK, no Runtime, nothing.
+         Used by the "Publish Release" GitHub Actions workflow. -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <!-- WPF apps can't be safely trimmed (reflection-heavy XAML loading) - leave trimming off. -->
+    <PublishTrimmed>false</PublishTrimmed>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Actively maintained fork of OpenHardwareMonitor -->
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.3" />
+    <PackageReference Include="HidSharp" Version="2.1.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <!-- MVVM toolkit for RelayCommand/ObservableObject -->
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <!-- Charting for the live gauges / history graphs -->
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc2" />
+  </ItemGroup>
+
+</Project>

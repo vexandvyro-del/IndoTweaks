@@ -1,0 +1,99 @@
+<Window x:Class="IndoTweaks.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:IndoTweaks.Views"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="IndoTweaks - Fortnite Performance &amp; Optimization Suite"
+        Height="800" Width="1320" MinHeight="640" MinWidth="1020"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" ResizeMode="CanResizeWithGrip"
+        Background="{StaticResource BgDeepBrush}">
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="36" ResizeBorderThickness="6" CornerRadius="0" GlassFrameThickness="0"/>
+    </shell:WindowChrome.WindowChrome>
+
+    <Border BorderBrush="{StaticResource BorderBrush2}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- ============ Custom Title Bar ============ -->
+            <Grid Grid.Row="0" Background="{StaticResource BgPanelBrush}" shell:WindowChrome.IsHitTestVisibleInChrome="False">
+                <StackPanel Orientation="Horizontal" Margin="12,0,0,0" VerticalAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Ellipse Width="8" Height="8" Fill="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                    <TextBlock Text="INDOTWEAKS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Content="&#xE921;" Style="{StaticResource CaptionButton}" Click="MinimizeButton_Click"/>
+                    <Button Content="&#xE922;" Style="{StaticResource CaptionButton}" Click="MaximizeButton_Click"/>
+                    <Button Content="&#xE8BB;" Style="{StaticResource CloseCaptionButton}" Click="CloseButton_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- ============ Body ============ -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Nav Rail -->
+                <Border Grid.Column="0" Background="{StaticResource BgPanelBrush}" BorderBrush="{StaticResource BorderBrush2}" BorderThickness="0,0,1,0">
+                    <Grid>
+                        <Rectangle Fill="{StaticResource AmbientGlowBrush}" Height="240" VerticalAlignment="Top" IsHitTestVisible="False"/>
+                        <DockPanel LastChildFill="False">
+                            <StackPanel DockPanel.Dock="Top" Margin="18,22,16,26">
+                                <TextBlock FontSize="21" FontWeight="Bold" FontFamily="Segoe UI Semibold">
+                                    <Run Text="INDO" Foreground="{StaticResource TextPrimaryBrush}"/><Run Text="TWEAKS" Foreground="{StaticResource AccentBrush}"/>
+                                </TextBlock>
+                                <TextBlock Text="Fortnite Optimization Suite" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,3,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Margin="10,0">
+                                <RadioButton x:Name="NavDashboard" GroupName="Nav" Style="{StaticResource NavButton}" IsChecked="True"
+                                             Content="📊  Dashboard" Checked="NavDashboard_Checked"/>
+                                <RadioButton x:Name="NavTweaks" GroupName="Nav" Style="{StaticResource NavButton}" Margin="0,4,0,0"
+                                             Content="⚙️  Tweaks &amp; Optimizations" Checked="NavTweaks_Checked"/>
+                                <RadioButton x:Name="NavFortnite" GroupName="Nav" Style="{StaticResource NavButton}" Margin="0,4,0,0"
+                                             Content="🎮  Fortnite Settings Fixer" Checked="NavFortnite_Checked"/>
+                                <RadioButton x:Name="NavLogs" GroupName="Nav" Style="{StaticResource NavButton}" Margin="0,4,0,0"
+                                             Content="🧾  Logs" Checked="NavLogs_Checked"/>
+                            </StackPanel>
+
+                            <!-- Efficiency score pinned to bottom of nav -->
+                            <Border DockPanel.Dock="Bottom" Style="{StaticResource CardBorder}" Margin="10,10,10,20">
+                                <StackPanel>
+                                    <TextBlock Text="SYSTEM EFFICIENCY" Style="{StaticResource SectionHeader}"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                        <TextBlock Text="{Binding EfficiencyScore}" FontSize="34" FontWeight="Bold"
+                                                   Foreground="{StaticResource AccentBrush}" FontFamily="Consolas"
+                                                   Effect="{StaticResource AccentGlow}"/>
+                                        <TextBlock Text="%" FontSize="16" Foreground="{StaticResource AccentBrush}" Margin="2,10,0,0"/>
+                                    </StackPanel>
+                                    <Rectangle Height="4" Fill="{StaticResource BgDeepBrush}" Margin="0,8,0,8" RadiusX="2" RadiusY="2"/>
+                                    <TextBlock Margin="0,0,0,0" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
+                                               Text="{Binding TotalFpsPenalty, StringFormat=Missing up to -{0} FPS}"/>
+                                    <TextBlock FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
+                                               Text="{Binding TotalLatencyPenaltyMs, StringFormat=Missing up to +{0}ms latency cut}"/>
+                                    <Button Content="Rescan" Style="{StaticResource SecondaryButton}" Margin="0,12,0,0"
+                                            Command="{Binding RecomputeEfficiencyScoreCommand}"/>
+                                </StackPanel>
+                            </Border>
+                        </DockPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Content Host -->
+                <Grid Grid.Column="1" Margin="28">
+                    <views:DashboardView x:Name="DashboardViewHost" DataContext="{Binding Dashboard}" Visibility="Visible"/>
+                    <views:TweaksView x:Name="TweaksViewHost" DataContext="{Binding Tweaks}" Visibility="Collapsed"/>
+                    <views:FortniteSettingsView x:Name="FortniteViewHost" DataContext="{Binding FortniteSettings}" Visibility="Collapsed"/>
+                    <views:LogsView x:Name="LogsViewHost" DataContext="{Binding Logs}" Visibility="Collapsed"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

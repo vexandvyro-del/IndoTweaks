@@ -1,0 +1,34 @@
+<UserControl x:Class="IndoTweaks.Views.LogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Margin="0,0,0,16">
+            <TextBlock Text="Logs" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Open Log File" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0"
+                        Command="{Binding OpenLogFileCommand}"/>
+                <Button Content="Clear" Style="{StaticResource SecondaryButton}" Command="{Binding ClearLogsCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <Border Style="{StaticResource CardBorder}" Padding="0">
+            <ListView ItemsSource="{Binding Entries}" Background="Transparent" BorderThickness="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="12,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Timestamp, StringFormat=yyyy-MM-dd HH:mm:ss}"
+                                       Foreground="{StaticResource TextSecondaryBrush}" FontFamily="Consolas" FontSize="12"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Level}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Message}" TextWrapping="Wrap" FontSize="12"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+    </DockPanel>
+</UserControl>

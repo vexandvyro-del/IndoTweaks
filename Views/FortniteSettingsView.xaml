@@ -1,0 +1,64 @@
+<UserControl x:Class="IndoTweaks.Views.FortniteSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Fortnite Settings Fixer" FontSize="24" FontWeight="Bold" Margin="0,0,0,16"/>
+
+        <Border DockPanel.Dock="Top" Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="GameUserSettings.ini" Style="{StaticResource SectionHeader}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Text="{Binding ConfigPath}" IsReadOnly="True" Background="Transparent"
+                             Foreground="{StaticResource TextPrimaryBrush}" BorderThickness="0" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1" Content="Browse..." Style="{StaticResource SecondaryButton}" Margin="8,0,0,0"
+                            Command="{Binding BrowseForConfigCommand}"/>
+                    <Button Grid.Column="2" Content="Rescan" Style="{StaticResource SecondaryButton}" Margin="8,0,0,0"
+                            Command="{Binding RescanCommand}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Grid DockPanel.Dock="Top" Margin="0,0,0,12">
+            <Button Content="Apply Selected Recommended Settings" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" Width="280"
+                    Command="{Binding ApplySelectedCommand}"/>
+            <Button Content="Restore Original" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Right" Width="160"
+                    Command="{Binding RestoreOriginalCommand}"/>
+        </Grid>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Mismatches}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Top" Margin="0,2,14,0"/>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="14"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
+                                        <TextBlock Foreground="{StaticResource StatusBadBrush}">
+                                            <Run Text="Current: "/><Run Text="{Binding CurrentValue}"/>
+                                        </TextBlock>
+                                        <TextBlock Text="  →  " Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock Foreground="{StaticResource StatusGoodBrush}">
+                                            <Run Text="Recommended: "/><Run Text="{Binding RecommendedValue}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Reason}" TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>
